@@ -11,14 +11,14 @@ COLON   := "
 
 ##Linux
 #
-#CROSS_PATH    := $(COLON)/usr/bin
-#CROSS_COMPILE := $(CROSS_PATH)/arm-none-eabi-
+CROSS_PATH    := $(COLON)/usr/bin
+CROSS_COMPILE := $(CROSS_PATH)/arm-none-eabi-
 ##
 
 ##Win
 #
-CROSS_PATH    := $(COLON)V:\CooCox\GNU Tools ARM Embedded\4.8 2014q2\bin
-CROSS_COMPILE := $(CROSS_PATH)\arm-none-eabi-
+#CROSS_PATH    := $(COLON)V:\CooCox\GNU Tools ARM Embedded\4.8 2014q2\bin
+#CROSS_COMPILE := $(CROSS_PATH)\arm-none-eabi-
 #
 ##
 
