@@ -1,11 +1,18 @@
-##
-#rlwrap -c tclsh
-#source flash_image.tcl
-#openocd -f interface/stlink-v2.cfg -f m051_nuc1x_win.cfg -f flash_image.tcl
-#openocd-0.8.0.exe -f interface/stlink-v2.cfg
-# -f target_M0517_win.tcl -f target_M0517_linux.tcl
+#-----------------------------------------------------------------------------
+# Support function to Flash NuMicro M051x microcontrolers
+#  for use with OpenOCD TCL
+#
+#  Copyright (c) 2015 Sasa Mihajlovixc
+#
+#-----------------------------------------------------------------------------
+#
+# openocd -f interface/stlink-v2.cfg -f target_M0517_win.cfg -f M0517_flash.tcl
+# openocd -f interface/stlink-v2.cfg -f target_M0517_linux.cfg -f M0517_flash.tcl
+# -s V:\tmp\openocd-0.8.0\bin
 # -f M0517_unlock.tcl -f M0517_flash.tcl
-#FlashAprom cheali-charger.bin
+# source M0517_flash.tcl
+# source M0517_unlock.tcl
+# FlashAprom (cheali-charger.bin|cheali-charger.hex)
 ##
 #
 
@@ -14,7 +21,7 @@
 # --------------------
 # r0  arg0 & return
 # r1  arg1 
-# r2  arg2 
+# r2  arg2
 ##
 
 proc getFileType {Filename} {
@@ -61,10 +68,10 @@ proc FlashAprom { Filename } {
 	puts ">>>>     FlashInit stop:"
 
 	set time_init [clock seconds]
-	puts "Trajanje init: [expr $time_init - $time_start] sec"
+	puts "time init: [expr $time_init - $time_start] sec"
 	
-# r0	//address od 1. sector for erease
-# r1	//number od sectors to erease 
+# r0	//address of 1. sector for erease
+# r1	//number od sectors to erease
 	puts ">>>>     EreaseFlash: start"	
 	puts "     FLASH sector addr: [format 0x%08x $fl_base_adr]"
 	puts "     sectors to erease: [format 0x%08x $f_sec]"
@@ -83,11 +90,11 @@ proc FlashAprom { Filename } {
 	puts ">>>>    FlashErease: stop"
 
 	set time_brisi [clock seconds]
-	puts "Trajanje brisi: [expr $time_brisi - $time_init] sec"
+	puts "time erease: [expr $time_brisi - $time_init] sec"
 	
-#r0 :: adr  // adresa gdje se kopira img
-#r1 :: sz   // velicna bloka koji se kopira u bajtima
-#r2 :: *buf // pointer na baffer sa podacima
+#r0 :: fl_adr   // destination address for image flash block
+#r1 :: sn       // flash block size (bytes)
+#r2 :: SRAM_BUF // source address for image flash block (data for flash)
 	puts ">>>>   FLASH image: $Filename to [format 0x%08x $fl_base_adr]"		
 
 	set fl_sec $fl_bank
@@ -103,10 +110,10 @@ proc FlashAprom { Filename } {
 		set dn [expr ($sn/512)]
 		
 		puts ">> Flash Sector: $fl_sec-[expr ($fl_sec + $dn -1)] => [format 0x%08x $fl_adr] ($s)"
-		puts "     SRAM load : $Filename => $SRAM_BUF"
-		puts "     FLASH addr: reg r0 [format 0x%08x $fl_adr]"
-		puts "     SIZE  addr: reg r1 [format 0x%08x $sn]"	
-		puts "     BUFFR addr: reg r2 $SRAM_BUF"
+#		puts "     SRAM load : $Filename => $SRAM_BUF"
+#		puts "     FLASH addr: reg r0 [format 0x%08x $fl_adr]"
+#		puts "     SIZE  addr: reg r1 [format 0x%08x $sn]"
+#		puts "     BUFFR addr: reg r2 $SRAM_BUF"
   		          
 		load_image $Filename [expr ($SRAM_BUF - $fl_adr)] $f_type $SRAM_BUF $BUF_SIZE
 		
@@ -132,8 +139,8 @@ proc FlashAprom { Filename } {
 	
 	set time_stop [clock seconds]
 	
-	puts "Trajanje pisi: [expr $time_stop - $time_brisi] sec"
-	puts "Trajanje ukupno: [expr $time_stop - $time_start] sec"
+	puts "time write: [expr $time_stop - $time_brisi] sec"
+	puts "time summary: [expr $time_stop - $time_start] sec"
 	
 }
 

@@ -1,0 +1,74 @@
+test_unlock
+putty:
+------
+Open On-Chip Debugger
+> source M0517_unlock.tcl
+EraseChip
+> ReadConf
+target state: halted
+target halted due to debug-request, current mode: Handler HardFault
+xPSR: 0x61000003 pc: 0xfffffffe msp: 0x20000f70
+> EraseChip  (Enter in OpenOCD console)
+>
+>
+> ReadConf
+target state: halted
+target halted due to debug-request, current mode: Handler HardFault
+xPSR: 0x61000003 pc: 0xfffffffe msp: 0x20000f70
+> WriteConf (Enter in OpenOCD console)
+> ReadConf
+>
+
+
+
+OpenOCD:
+--------
+V:\tmp\openocd-0.8.0\bin>openocd -f interface/stlink-v2.cfg -f target_M0517_win.cfg
+Open On-Chip Debugger 0.8.0 (2014-04-28-08:39)
+Licensed under GNU GPL v2
+For bug reports, read
+        http://openocd.sourceforge.net/doc/doxygen/bugs.html
+0
+Info : This adapter doesn't support configurable speed
+Info : STLINK v2 JTAG v23 API v2 SWIM v4 VID 0x0483 PID 0x3748
+Info : using stlink api v2
+Info : Target voltage: 3.257030
+Info : M0517.cpu: hardware has 4 breakpoints, 2 watchpoints
+Info : accepting 'telnet' connection from 4444
+EraseChip
+Reading User Config. registers
+target state: halted
+target halted due to debug-request, current mode: Handler HardFault
+xPSR: 0x61000003 pc: 0xfffffffe msp: 0x20000f70
+Config0 (0x00300000):0xF8FFFFFD
+Config1 (0x00300004):0x1F000
+Device ID :0x10005A00
+Flash is locked!
+  to erase whole chip perform:
+  => EraseChip
+  => WriteConf
+Flash is locked!
+Chip erase...
+.
+.
+.
+APROM: Erased!: (0x00000000):0xFFFFFFFF
+LDROM: Erased!: (0x00100000):0xFFFFFFFF
+Config: Erased!: (0x0030000):0xFFFFFFFF
+Reading User Config. registers
+target state: halted
+target halted due to debug-request, current mode: Handler HardFault
+xPSR: 0x61000003 pc: 0xfffffffe msp: 0x20000f70
+Config0 (0x00300000):0xFFFFFFFF
+Config1 (0x00300004):0xFFFFFFFF
+Device ID :0x10005A00
+Flash is not locked!
+.
+.
+.
+User config written
+Reading User Config. registers
+Config0 (0x00300000):0xF8FFFFFF
+Config1 (0x00300004):0xFFFFFFFF
+Device ID :0x10005A00
+Flash is not locked!
