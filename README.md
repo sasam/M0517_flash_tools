@@ -18,7 +18,7 @@ WriteConf
 flash:
 ```
 source M0517_flash.tcl
-FlashAprom cheali-charger.bin
+FlashAprom cheali-charger.[bin|hex]
 ```
 
 SRAM alocation
