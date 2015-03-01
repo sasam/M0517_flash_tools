@@ -3,8 +3,16 @@ Flash tools for Nuvoton M0517LBN CPU for use with OpenOCD TCL scripts
 
 start OpenOCD:
 ```
-win: openocd-0.8.0.exe -f interface/stlink-v2.cfg -f target_M0517_win.tcl
-linux: openocd -f interface/stlink-v2.cfg -f target_M0517_linux.tcl
+win: openocd-0.8.0.exe -f interface/stlink-v2.cfg -f target_M0517_win.cfg
+linux: openocd -f interface/stlink-v2.cfg -f target_M0517_linux.cfg
+```
+
+unlock:
+```
+source M0517_unlock.tcl
+ReadConf
+EraseChip
+WriteConf
 ```
 
 flash:
@@ -32,10 +40,3 @@ SRAM alocation
 +-------------------+
 ```
 
-unlock:
-```
-source M0517_unlock.tcl
-ReadConf
-EraseChip
-WriteConf
-```
